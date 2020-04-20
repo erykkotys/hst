@@ -1,0 +1,5 @@
+.idea/
+venv/
+old_spaghetti.py
+__pycache__/
+
