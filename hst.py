@@ -18,21 +18,25 @@ class HstFile:
         """
         Opens the file, tires find the appropriate encoding, read the file and return it's content
         """
-        with open(self.path, "rb") as f:
-            raw_data = f.read()
-            result = chardet.detect(raw_data)
-            encoding = result['encoding']
-        if encoding:
-            with open(self.path, 'r', encoding=encoding) as f:
-                content = f.readlines()
-        else:
-            try:
-                with open(self.path, 'r', encoding='ansi') as f:
+        try:
+            with open(self.path, "rb") as f:
+                raw_data = f.read()
+                result = chardet.detect(raw_data)
+                encoding = result['encoding']
+            if encoding:
+                with open(self.path, 'r', encoding=encoding) as f:
                     content = f.readlines()
-            except UnicodeDecodeError:
-                print('Jakis blad kodowania pliku')
-                return -1
-        return content
+            else:
+                try:
+                    with open(self.path, 'r', encoding='ansi') as f:
+                        content = f.readlines()
+                except UnicodeDecodeError:
+                    print('Jakis blad kodowania pliku')
+                    return -1
+            return content
+        except FileNotFoundError:
+            print(f'Wskazany plik {self.path} nie istnieje')
+            exit()
 
     def parse(self):
         entries = []
@@ -45,7 +49,7 @@ class HstFile:
         margin_low = datetime.timedelta(seconds=margin_low)
         margin_high = datetime.timedelta(minutes=margin_high)
         inconsistencies = []
-        # first entry always has incorrect date
+        # first entry always has yesterdays date
         expected = self.entries[0].expected_end+datetime.timedelta(days=1)
         for entry in self.entries[1:]:
             time_diff = entry.time - expected

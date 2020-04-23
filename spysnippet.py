@@ -27,7 +27,8 @@ class SpySnippet:
     def __str__(self):
         return f'start: {self.start}, end: {self.end}, length: {self.length}'
 
-    def find_file(self, start_time):
+    @staticmethod
+    def find_file(start_time):
         file_string = start_time.strftime('%Y %m %d %H 00 00')
         spy_file = ''
         for file in os.listdir(SpySnippet.spy_folder):
