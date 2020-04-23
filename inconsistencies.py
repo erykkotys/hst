@@ -50,8 +50,10 @@ def batch_search():
     while search_datetime != end_datetime:
         search_date = search_datetime.strftime('%Y%m%d')
         file = hst.HstFile(search_date)
-        print(f'\n* * * Wyniki dla pliku {file.path} z {file.date.date()} ({file.date.weekday()}) : * * *\n')
-        file.inconsistencies()
+        print(f'\n* * * Wyniki dla pliku {file.path} z {file.date.strftime("%Y-%m-%d (%A)")}: * * *\n')
+        inconsistencies = file.inconsistencies()
+        if not inconsistencies:
+            print('Brak dziur - emisja spojna')
         search_datetime += increment
     print('\n\n')
 
