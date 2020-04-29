@@ -11,10 +11,9 @@ class HstFile:
     def __init__(self, date):
         self.date = datetime.datetime.strptime(date, '%Y%m%d')
         self.path = os.path.join(HstFile.folder, self.date.strftime('%y_%m_%d.HST'))
-        self.content = self.get_content()
-        self.entries = self.parse()
 
-    def get_content(self):
+    @property
+    def content(self):
         """
         Opens the file, tires find the appropriate encoding, read the file and return it's content
         """
@@ -38,7 +37,8 @@ class HstFile:
             print(f'Wskazany plik {self.path} nie istnieje')
             exit()
 
-    def parse(self):
+    @property
+    def entries(self):
         entries = []
         for i, line in enumerate(self.content):
             data = line.split('; ')
