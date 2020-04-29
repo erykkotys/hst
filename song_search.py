@@ -23,6 +23,16 @@ while True:
         print('Nieprawidlowy format czasu')
         continue
 
+# print('-' * 80, '\n')
+# print(f'Utwór grany {search.date()} o {search.time()}:')
+# print(entry)
+# pyperclip.copy(f'{entry.artist} - {entry.title}')
+# print('Utwor skopiowany do schowka, wcisnij Ctrl + V aby wkleic')
+# print('\n', '-' * 80)
+# print('Kontekst:')
+# for x in range(-3, 3):
+#     print(self.entries[i + x])
+# print('-' * 80)
 
 file.search(time)
 

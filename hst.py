@@ -12,9 +12,10 @@ class HstFile:
         self.date = datetime.datetime.strptime(date, '%Y%m%d')
         self.path = os.path.join(HstFile.folder, self.date.strftime('%y_%m_%d.HST'))
         self.index = 0
+        self.content = self.get_content()
+        self.entries = self.get_entries()
 
-    @property
-    def content(self):
+    def get_content(self):
         """
         Opens the file, tires find the appropriate encoding, read the file and return it's content
         """
@@ -38,8 +39,7 @@ class HstFile:
             print(f'Wskazany plik {self.path} nie istnieje')
             exit()
 
-    @property
-    def entries(self):
+    def get_entries(self):
         entries = []
         for i, line in enumerate(self.content):
             data = line.split('; ')
@@ -110,3 +110,10 @@ class Entry:
 
     def __str__(self):
         return f'{self.time} : {self.artist} - {self.title}'
+
+
+# if __name__ == '__main__':
+#     file = HstFile('20200429')
+#     print(len(file))
+#     for entry in file:
+#         print(entry)
