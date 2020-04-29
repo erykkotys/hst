@@ -11,6 +11,7 @@ class HstFile:
     def __init__(self, date):
         self.date = datetime.datetime.strptime(date, '%Y%m%d')
         self.path = os.path.join(HstFile.folder, self.date.strftime('%y_%m_%d.HST'))
+        self.index = 0
 
     @property
     def content(self):
@@ -44,6 +45,19 @@ class HstFile:
             data = line.split('; ')
             entries.append(Entry(data[0] + data[2], data[1], data[3], data[4], data[5], data[6], data[7]))
         return entries
+
+    def __len__(self):
+        return len(self.entries)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self):
+            raise StopIteration
+        index = self.index
+        self.index += 1
+        return self.entries[index]
 
     def inconsistencies(self, margin_low=10, margin_high=20):
         margin_low = datetime.timedelta(seconds=margin_low)
