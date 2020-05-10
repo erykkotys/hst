@@ -13,7 +13,9 @@ def menu():
         if select == '1':
             user_input = date_input()
             file_1 = hst.HstFile(user_input)
-            file_1.inconsistencies()
+            inconsistencies = file_1.get_inconsistencies()
+            for inconsistency in inconsistencies:
+                print(inconsistency)
             exit()
         elif select == '2':
             batch_search()
@@ -50,11 +52,14 @@ def batch_search():
     while search_datetime != end_datetime:
         search_date = search_datetime.strftime('%Y%m%d')
         file = hst.HstFile(search_date)
-        print(f'\n* * * Wyniki dla pliku {file.path} z {file.date.strftime("%Y-%m-%d (%A)")}: * * *\n')
-        inconsistencies = file.inconsistencies()
+        print(f'\nWyniki dla pliku {file.path} z {file.date.strftime("%Y-%m-%d (%A)")}: \n')
+        inconsistencies = file.get_inconsistencies()
         if not inconsistencies:
             print('Brak dziur - emisja spojna')
+        for inconsistency in inconsistencies:
+            print(inconsistency)
         search_datetime += increment
+
     print('\n\n')
 
 

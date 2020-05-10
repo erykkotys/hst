@@ -59,7 +59,7 @@ class HstFile:
         self.index += 1
         return self.entries[index]
 
-    def inconsistencies(self, margin_low=10, margin_high=20):
+    def get_inconsistencies(self, margin_low=10, margin_high=20):
         margin_low = datetime.timedelta(seconds=margin_low)
         margin_high = datetime.timedelta(minutes=margin_high)
         inconsistencies = []
@@ -74,8 +74,6 @@ class HstFile:
                 inconsistencies.append(f' * Dziura w emisji, spodziewany czas {expected.time()}, '
                                        f'rzeczywisty: {entry.time}, roznica: {time_diff} * ')
             expected = entry.time + entry.length
-        for i in inconsistencies:
-            print(i)
         return inconsistencies
 
     def search(self, time):
@@ -83,6 +81,7 @@ class HstFile:
         search = self.date + time
         for i, entry in enumerate(self.entries):
             if entry.time < search < self.entries[i+1].time:
+                # TODO: prints on business side
                 print('-'*80, '\n')
                 print(f'Utwór grany {search.date()} o {search.time()}:')
                 print(entry)
@@ -112,8 +111,8 @@ class Entry:
         return f'{self.time} : {self.artist} - {self.title}'
 
 
-# if __name__ == '__main__':
-#     file = HstFile('20200429')
-#     print(len(file))
-#     for entry in file:
-#         print(entry)
+if __name__ == '__main__':
+    file = HstFile('20200429')
+    print(len(file))
+    for entry in file:
+        print(entry)
