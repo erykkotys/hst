@@ -7,7 +7,7 @@ class SpySnippet:
     spy_folder = r'S:'
     temp_file = os.path.join(r'L:\Wycinki ze Szpiega', 'temp.mp3')
     export_folder = r'L:\Wycinki ze Szpiega'
-    allowed_length = datetime.timedelta(minutes=60)
+    allowed_length = datetime.timedelta(minutes=90)
 
     def __init__(self, date, time_start, time_end):
         self.start = datetime.datetime.strptime(date+time_start, '%Y%m%d%H:%M:%S')
@@ -34,7 +34,11 @@ class SpySnippet:
         for file in os.listdir(SpySnippet.spy_folder):
             if file.startswith(file_string):
                 spy_file = os.path.join(SpySnippet.spy_folder, file)
-        return spy_file
+                with open(SpySnippet.temp_file, 'wb') as f:
+                    with open(spy_file, 'rb') as part:
+                        part = part.read()
+                        f.write(part)
+                return SpySnippet.temp_file
 
     def cat(self, start, end):
         # TODO: change this to __add__ method
@@ -71,6 +75,8 @@ class SpySnippet:
 
 
 if __name__ == '__main__':
-    file_1 = SpySnippet('20200415', '20:12:15', '21:02:12')
+    file_1 = SpySnippet('20210305', '17:17:00', '17:25:00')
     print(file_1)
     file_1.cut()
+
+# TODO: skrypt dziala, kiedy wycinamy przez 2 pliki np. 10:45 - 11:01 ale nie jak np. 10:40 - 10:50
